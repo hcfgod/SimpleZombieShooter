@@ -64,10 +64,18 @@ public class CallOfDutyAmmoBehavior : MonoBehaviour, IAmmoBehavior
 	{
 		yield return new WaitForSeconds(ammoBehaviorData.reloadDelayForSecondPartOfAudio);
 		
-		AudioManager.instance.PlaySFX(gunData.reloadAudiop2, 0.5f, false);
+		float timeLeftToWait = 0.0f;
 		
-		float timeLeftToWait = ammoBehaviorData.ReloadTime - ammoBehaviorData.reloadDelayForSecondPartOfAudio;
-				
+		if(gunData.reloadAudiop2 != null)
+		{
+			AudioManager.instance.PlaySFX(gunData.reloadAudiop2, 0.5f, false);
+			timeLeftToWait = ammoBehaviorData.ReloadTime - ammoBehaviorData.reloadDelayForSecondPartOfAudio;
+		}
+		else
+		{
+			timeLeftToWait = ammoBehaviorData.ReloadTime;
+		}
+			
 		yield return new WaitForSeconds(timeLeftToWait);
 
 		LoadMagazineFromReserve();

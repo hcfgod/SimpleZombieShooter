@@ -16,11 +16,11 @@ MonoBehaviour:
   fireRate: 0.4
   isReloading: 0
   isAiming: 0
-  isShooting: 0
+  isShooting: 1
   isGunMagEmpty: 0
-  shootingAudio: {fileID: 8300000, guid: ef192acc75e5f0846b67afe2e5a00363, type: 3}
-  emptyshootingAudio: {fileID: 8300000, guid: 2f79ad7952b593347a5b597889ba9be9, type: 3}
-  reloadAudiop1: {fileID: 8300000, guid: 29dafe75292193949a69f3a926fe0a2f, type: 3}
-  reloadAudiop2: {fileID: 8300000, guid: df8e5e34c9c4adc4a8e630d7046e7314, type: 3}
+  shootingAudio: {fileID: 8300000, guid: 57be9f76b7fd1914fbb8a53e7ad41c53, type: 3}
+  emptyshootingAudio: {fileID: 8300000, guid: 540f429d650fda448a3ad0ef6accd50d, type: 3}
+  reloadAudiop1: {fileID: 8300000, guid: 5352c7bdf44b11141ba87d35e6e5a45a, type: 3}
+  reloadAudiop2: {fileID: 0}
   isChamberingRound: 0
   isRoundChambered: 0
