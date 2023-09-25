@@ -45,9 +45,7 @@ public class Bullet : MonoBehaviour
 			{
 				AudioManager.instance.PlaySFX(impactAudioClip, 0.025f, true);
 			}
-			
-			Debug.Log(hitInfo.transform.name);
-			
+
 			bulletRigidBody.velocity = Vector3.zero;
 			gameObject.SetActive(false);
 		
