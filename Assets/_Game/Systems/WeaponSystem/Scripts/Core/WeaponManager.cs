@@ -11,14 +11,10 @@ public class WeaponManager : MonoBehaviour
 	
 	private WeaponAnimator _gunAnimator;
 	
-	private void Start()
-	{
-		// Temp Setting The Current Weapon To A Test Weapon For Testing Purposes
-		SwitchWeapon(FindObjectOfType<RangedWeapon>());
-	}
-	
 	private void Update()
 	{
+		if(CurrentWeapon == null) return;
+		
 		HandleGunInput();
 	}
 	

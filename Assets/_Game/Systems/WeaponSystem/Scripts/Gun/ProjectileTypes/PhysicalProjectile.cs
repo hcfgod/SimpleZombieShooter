@@ -17,10 +17,12 @@ public class PhysicalProjectile : MonoBehaviour, IProjectileType
 	public int poolSize = 20; // Size of the bullet pool
 	
 	[SerializeField] private List<ParticleSystem> muzzleFlashEffects;
+	[SerializeField] private GameObject impactEffectPrefab;
+	[SerializeField] private AudioClip impactAudioClip;
 	
 	private Queue<GameObject> bulletPool;
 	
-	private List<Transform> _ignoreTransforms;
+	private List<string> _ignoreTransformsNames;
 	
 	private WeaponSpread _weaponSpread;
 	
@@ -29,7 +31,7 @@ public class PhysicalProjectile : MonoBehaviour, IProjectileType
 		_weaponSpread = GetComponent<WeaponSpread>();
 		
 		// Initialize the list of transforms to ignore
-		_ignoreTransforms = ComponentUtils.CollectAllTransforms(playerRoot.transform);
+		_ignoreTransformsNames = ComponentUtils.CollectAllTransformsNames(playerRoot.transform);
 		
 		// Check if bulletPrefab and bulletSpawnPoint are set
 		if (bulletPrefab == null || bulletSpawnPoint == null)
@@ -46,8 +48,8 @@ public class PhysicalProjectile : MonoBehaviour, IProjectileType
 			GameObject bulletObject = Instantiate(bulletPrefab, transform);
 			Bullet bullet = bulletObject.AddComponent<Bullet>();
 			bullet.OnTargetHit += TargetHit;
-			_ignoreTransforms.Add(bullet.transform);
-			bullet.IgnoreTransforms = _ignoreTransforms;
+			_ignoreTransformsNames.Add(bullet.transform.name);
+			bullet.IgnoreTransformsNames = _ignoreTransformsNames;
 			bulletObject.SetActive(false);
 			bulletPool.Enqueue(bulletObject);
 		}
@@ -91,12 +93,19 @@ public class PhysicalProjectile : MonoBehaviour, IProjectileType
 			particalSystem.Play();
 		}
 		
-		float spread = _weaponSpread.GetCurrentSpread();
-		Vector3 spreadOffset = new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0);
-		Vector3 finalVelocity = bulletSpeed * (bulletSpawnPoint.forward + spreadOffset);
+		if(_weaponSpread != null)
+		{
+			float spread = _weaponSpread.GetCurrentSpread();
+			Vector3 spreadOffset = new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0);
+			Vector3 finalVelocity = bulletSpeed * (bulletSpawnPoint.forward + spreadOffset);
+			
+			rb.velocity = finalVelocity;
+		}
+		else
+		{
+			Vector3 finalVelocity = bulletSpeed * bulletSpawnPoint.forward;	
+		}
 
-		rb.velocity = finalVelocity;
-		
 		StartCoroutine(DeactivateAndEnqueueBullet(bullet, 2));
 	}
 	
@@ -112,8 +121,20 @@ public class PhysicalProjectile : MonoBehaviour, IProjectileType
 		bulletPool.Enqueue(bullet);
 	}
 	
-	private void TargetHit(GameObject gameobject)
+	private void TargetHit(RaycastHit hitInfo)
 	{
+		// Instantiate the impact effect at the collision point and align it with the surface normal
+		if (impactEffectPrefab != null)
+		{
+			GameObject impactEffect = Instantiate(impactEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+			Destroy(impactEffect, 2f);  // Destroy the effect after 2 seconds
+		}
+			
+		if(impactAudioClip != null)
+		{
+			AudioManager.instance.PlaySFX(impactAudioClip, 0.025f, true);
+		}
+		
 		OnTargetHitUnityEvent?.Invoke();
 	}
 }

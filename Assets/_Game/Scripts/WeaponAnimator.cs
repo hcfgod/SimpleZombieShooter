@@ -17,6 +17,8 @@ public class WeaponAnimator : MonoBehaviour
 
 	private void Update()
 	{
+		if(GunData == null) return;
+		
 		HandleNormalLoco();
 		HandleAimingLoco();
 	}

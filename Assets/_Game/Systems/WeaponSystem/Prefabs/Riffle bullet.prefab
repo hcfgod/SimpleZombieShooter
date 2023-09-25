@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33489806615004086}
   - component: {fileID: 23033829210902890}
   - component: {fileID: 54702508974386156}
-  - component: {fileID: 458302816177626319}
   m_Layer: 0
   m_Name: Riffle bullet
   m_TagString: Untagged
@@ -112,19 +111,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &458302816177626319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1385112685355120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0b58216261fb6408e40a3685370e8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IgnoreTransforms: []
-  impactEffectPrefab: {fileID: 1553766363492722, guid: 4a655a5bd9434e84d949ae423117521f,
-    type: 3}
-  impactAudioClip: {fileID: 8300000, guid: 849555712947d394da23ae01b0455bba, type: 3}

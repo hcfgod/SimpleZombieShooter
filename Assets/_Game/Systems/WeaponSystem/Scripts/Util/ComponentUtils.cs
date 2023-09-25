@@ -61,4 +61,21 @@ public class ComponentUtils : MonoBehaviour
 			CollectAllTransformsRecursive(child, list);
 		}
 	}
+	
+	public static List<string> CollectAllTransformsNames(Transform root)
+	{
+		List<string> _ignoreTransformsNames = new List<string>();
+		CollectAllTransformsNamesRecursive(root, _ignoreTransformsNames);
+		return _ignoreTransformsNames;
+	}
+
+	private static void CollectAllTransformsNamesRecursive(Transform root, List<string> list)
+	{
+		list.Add(root.name);
+		
+		foreach (Transform child in root)
+		{
+			CollectAllTransformsNamesRecursive(child, list);
+		}
+	}
 }
