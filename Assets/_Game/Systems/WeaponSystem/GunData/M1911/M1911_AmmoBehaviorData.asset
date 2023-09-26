@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxAmmo: 90
   MagSize: 10
-  ReloadTime: 0.4
+  ReloadTime: 1
   ChamberingDelay: 0.1
   reloadDelayForSecondPartOfAudio: 0.2
