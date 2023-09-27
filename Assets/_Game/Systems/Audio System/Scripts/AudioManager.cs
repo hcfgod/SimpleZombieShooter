@@ -24,8 +24,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private AudioMixer audioMixer;
 
-    private List<AudioSource> audioSourcePool = new List<AudioSource>();
+	[SerializeField]
 	private int poolSize = 50;
+	
+	private List<AudioSource> audioSourcePool = new List<AudioSource>();
 
     [SerializeField]
     private List<Audio> audioClips = new List<Audio>();

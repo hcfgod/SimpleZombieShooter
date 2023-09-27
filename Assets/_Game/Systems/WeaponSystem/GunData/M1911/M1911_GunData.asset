@@ -17,10 +17,11 @@ MonoBehaviour:
   isReloading: 0
   isAiming: 0
   isShooting: 1
-  isGunMagEmpty: 0
+  isGunMagEmpty: 1
   shootingAudio: {fileID: 8300000, guid: 57be9f76b7fd1914fbb8a53e7ad41c53, type: 3}
   emptyshootingAudio: {fileID: 8300000, guid: 540f429d650fda448a3ad0ef6accd50d, type: 3}
   reloadAudiop1: {fileID: 8300000, guid: 5352c7bdf44b11141ba87d35e6e5a45a, type: 3}
   reloadAudiop2: {fileID: 0}
+  shootingVolume: 0.25
   isChamberingRound: 0
   isRoundChambered: 0

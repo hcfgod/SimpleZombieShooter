@@ -15,13 +15,13 @@ public class SingleShot : MonoBehaviour, IFiringMode
 	{
 		if(gunData.isGunMagEmpty)
 		{
-			AudioManager.instance.PlaySFX(gunData.emptyshootingAudio, 0.5f, true);
+			AudioManager.instance.PlaySFX(gunData.emptyshootingAudio, gunData.shootingVolume, true);
 			return;
 		}
 		
 		projectileType.Fire(weaponData);
 		
-		AudioManager.instance.PlaySFX(gunData.shootingAudio, 0.5f, true);
+		AudioManager.instance.PlaySFX(gunData.shootingAudio, gunData.shootingVolume, true);
 			
 		OnWeaponFiredEvent?.DynamicInvoke();
 		OnWeaponFired?.Invoke();

@@ -16,23 +16,26 @@ public class EquipmentManager : MonoBehaviour
 		_simpleInventory = GetComponent<SimpleInventory>();
 	}
 	
-	private void Update()
+	private void Start()
 	{
-		if(Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			if(_simpleInventory.CurrentPrimary == null)
-				return;
+		InputManager.Instance.PlayerInputActions.Weapon.SwitchToPrimary.performed += _ => SwitchToPrimary();
+		InputManager.Instance.PlayerInputActions.Weapon.SwitchToSecondary.performed += _ => SwitchToSecondary();
+	}
+	
+	private void SwitchToPrimary()
+	{
+		if(_simpleInventory.CurrentPrimary == null)
+			return;
 				
-			EquipPrimary(_simpleInventory.CurrentPrimary.WeaponData.WeaponName);
-		}
-		
-		if(Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			if(_simpleInventory.CurrentSecondary == null)
-				return;
+		EquipPrimary(_simpleInventory.CurrentPrimary.WeaponData.WeaponName);
+	}
+	
+	private void SwitchToSecondary()
+	{
+		if(_simpleInventory.CurrentSecondary == null)
+			return;
 				
-			EquipSecondary(_simpleInventory.CurrentSecondary.WeaponData.WeaponName);
-		}
+		EquipSecondary(_simpleInventory.CurrentSecondary.WeaponData.WeaponName);
 	}
 	
 	public void EquipPrimary(string weaponName)

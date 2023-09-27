@@ -20,7 +20,7 @@ public class GunData : ScriptableObject
 	public AudioClip reloadAudiop1;
 	public AudioClip reloadAudiop2;
 	
-	
+	public float shootingVolume;
 	
 	// For Realistic Ammo
 	public bool isChamberingRound = false;

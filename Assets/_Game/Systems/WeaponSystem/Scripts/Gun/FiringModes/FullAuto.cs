@@ -24,14 +24,14 @@ public class FullAuto : MonoBehaviour, IFiringMode
 
 			if(gunData.isGunMagEmpty)
 			{
-				AudioManager.instance.PlaySFX(gunData.emptyshootingAudio, 0.5f, true);
+				AudioManager.instance.PlaySFX(gunData.emptyshootingAudio, gunData.shootingVolume, true);
 				return;
 			}
 			
 			// Fire the weapon
 			projectileType.Fire(weaponData);
 
-			AudioManager.instance.PlaySFX(gunData.shootingAudio, 0.5f, true);
+			AudioManager.instance.PlaySFX(gunData.shootingAudio, gunData.shootingVolume, false);
 			
 			OnWeaponFiredEvent?.DynamicInvoke();
 			OnWeaponFired?.Invoke();

@@ -11,6 +11,18 @@ public class WeaponManager : MonoBehaviour
 	
 	private WeaponAnimator _gunAnimator;
 	
+	private InputManager _inputManager;
+	
+	private void Start()
+	{
+		_inputManager = FindObjectOfType<InputManager>();
+		
+		_inputManager.PlayerInputActions.Weapon.Attack.performed += _ => FireCurrentWeapon();
+		_inputManager.PlayerInputActions.Weapon.Attack.canceled += _ => StopFiringCurrentWeapon();
+		
+		_inputManager.PlayerInputActions.Weapon.Reload.performed += _ => Reload();
+	}
+	
 	private void Update()
 	{
 		if(CurrentWeapon == null) return;
@@ -32,12 +44,50 @@ public class WeaponManager : MonoBehaviour
 		}
 	}
 
-	public void FireCurrentWeapon()
+	private void FireCurrentWeapon()
 	{
-		CurrentWeapon?.Attack();
+		if(CurrentWeapon == null) return;
+		
+		if (CurrentWeapon is BaseGun gun)
+		{	
+			if (gun.FireModeEnum == EFireMode.Auto)
+			{
+				CurrentWeapon.Attack();
+			}
+			else if(gun.FireModeEnum == EFireMode.Single)
+			{
+				CurrentWeapon.Attack();
+			}
+		}
 	}
 	
-	public System.Type GetCurrentWeaponType()
+	private void StopFiringCurrentWeapon()
+	{
+		if(CurrentWeapon == null) return;
+		
+		if (CurrentWeapon is BaseGun gun)
+		{	
+			if (gun.FireModeEnum == EFireMode.Auto)
+			{
+				if (Input.GetMouseButtonUp(0))
+				{
+					gun.GetProjectileType().StopFiring();
+				}
+			}
+		}
+	}
+	
+	private void Reload()
+	{
+		if(CurrentWeapon == null) return;
+		
+		if (CurrentWeapon is BaseGun gun)
+		{
+			gun.Reload();
+		}
+	}
+	
+	private System.Type GetCurrentWeaponType()
 	{
 		if (CurrentWeapon == null)
 		{
@@ -53,25 +103,13 @@ public class WeaponManager : MonoBehaviour
 		{	
 			if (gun.FireModeEnum == EFireMode.Auto)
 			{
-				if (Input.GetMouseButton(0))
-				{
-					CurrentWeapon.Attack();
-				}
-				if (Input.GetMouseButtonUp(0))
-				{
-					gun.GetProjectileType().StopFiring();
-				}
-			}
-			else if(gun.FireModeEnum == EFireMode.Single)
-			{
-				if (Input.GetMouseButtonDown(0))
+				if(_inputManager.PlayerInputActions.Weapon.Attack.IsPressed())
 				{
 					CurrentWeapon.Attack();
 				}
 			}
 			
-			// Aim when the right mouse button is pressed
-			if (Input.GetMouseButton(1))
+			if(_inputManager.PlayerInputActions.Weapon.Aim.IsPressed())
 			{
 				if(!playerData.canAim)
 					return;
@@ -84,19 +122,6 @@ public class WeaponManager : MonoBehaviour
 					return;
 					
 				gun.StopAiming();
-			}
-
-			if(Input.GetKeyDown(KeyCode.R))
-			{
-				gun.Reload();
-			}
-			
-			if(gun.GetCurrentAmmoBehaviour() is RealisticAmmoBehavior realisticAmmoBehaviour)
-			{
-				if (Input.GetKeyDown(KeyCode.C))
-				{
-					realisticAmmoBehaviour.ChamberRound();
-				}
 			}
 		}
 	}
