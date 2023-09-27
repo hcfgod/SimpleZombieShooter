@@ -31,8 +31,6 @@ public class Bullet : MonoBehaviour
 				return; // We hit ourselves or a child object, so return
 			}
 
-			Debug.Log(hitInfo.transform.name);
-			
 			bulletRigidBody.velocity = Vector3.zero;
 			gameObject.SetActive(false);
 		

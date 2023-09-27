@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: M1911_RecoilData
   m_EditorClassIdentifier: 
   recoilPattern:
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
-  - {x: 0, y: 8}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
+  - {x: 0, y: 0.5}
   randomnessFactor: 1
-  intensity: 10
+  intensity: 2
   recoveryRate: 5
   cameraShakeAmount: 0.1

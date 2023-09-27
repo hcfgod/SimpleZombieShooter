@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a928ea5cd6a32ee48a06ac10385d957a, type: 3}
   m_Name: M1911_WeaponData
   m_EditorClassIdentifier: 
-  WeaponName: M1911
+  WeaponName: Pistol_M1911
   MinDamage: 5
   MaxDamage: 10
   Range: 100

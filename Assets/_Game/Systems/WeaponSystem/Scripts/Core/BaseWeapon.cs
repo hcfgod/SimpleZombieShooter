@@ -6,6 +6,7 @@ public abstract class BaseWeapon : MonoBehaviour, IWeapon
 	[Space(10)]
 	
 	public WeaponData WeaponDataRef;
+	public WeaponData WeaponData { get { return WeaponDataRef; } set { WeaponDataRef = value; } }
 	
 	[Space(10)]
 	
