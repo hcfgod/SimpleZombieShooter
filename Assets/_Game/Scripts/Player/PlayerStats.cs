@@ -31,7 +31,7 @@ public class PlayerStats : MonoBehaviour
 	{
 		if (condition.StatName == "Health" && condition.Type == StatConditionType.EqualTo)
 		{
-			_statManager.GetStatInteractionManager().TriggerInteraction("HealthZero", _healthStat, null);
+			_statManager.GetStatInteractionManager().TriggerInteraction("HealthZero", this.gameObject, _healthStat, null);
 		}
 	}
 	

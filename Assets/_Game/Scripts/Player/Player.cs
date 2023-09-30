@@ -62,5 +62,12 @@ public class Player : MonoBehaviour
 		_playerData.isRunning = _playerMovment.IsRunning();
 		_playerData.isCrouching = _playerMovment.IsCrouched();
 		_playerData.isGrounded = _playerMovment.CharacterActor.IsGrounded;
+		
+		if(!_playerData.isGrounded)
+		{
+			_playerData.isIdle = false;
+			_playerData.isRunning = false;
+			_playerData.isWalking = false;
+		}
 	}
 }

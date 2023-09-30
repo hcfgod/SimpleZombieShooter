@@ -6,6 +6,6 @@ namespace StatSystem
 {
 	public interface IStatInteraction
 	{
-		void ApplyInteraction(Stat baseStat, Stat targetStat);
+		void ApplyInteraction(GameObject sender, Stat baseStat, Stat targetStat);
 	}
 }

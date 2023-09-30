@@ -6,9 +6,14 @@ using UnityEngine.Events;
 public class PhysicalProjectile : MonoBehaviour, IProjectileType
 {	
 	public UnityEvent2 OnTargetHitUnityEvent;
+	public delegate void TargetHitEventHandler(GameObject target);
+	
+	public event TargetHitEventHandler OnTargetHit;
 	
 	[SerializeField] private GameObject playerRoot;
 	[SerializeField] private PlayerData playerData;
+	
+	[SerializeField] private WeaponData weaponData;
 	[SerializeField] private GunData gunData;
 	
 	public GameObject bulletPrefab;
@@ -18,6 +23,7 @@ public class PhysicalProjectile : MonoBehaviour, IProjectileType
 	
 	[SerializeField] private List<ParticleSystem> muzzleFlashEffects;
 	[SerializeField] private GameObject impactEffectPrefab;
+	[SerializeField] private GameObject fleshImpactEffectPrefab;
 	[SerializeField] private AudioClip impactAudioClip;
 	
 	private Queue<GameObject> bulletPool;
@@ -122,19 +128,35 @@ public class PhysicalProjectile : MonoBehaviour, IProjectileType
 	}
 	
 	private void TargetHit(RaycastHit hitInfo)
-	{
-		// Instantiate the impact effect at the collision point and align it with the surface normal
-		if (impactEffectPrefab != null)
-		{
-			GameObject impactEffect = Instantiate(impactEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-			Destroy(impactEffect, 2f);  // Destroy the effect after 2 seconds
-		}
-			
+	{			
 		if(impactAudioClip != null)
 		{
 			AudioManager.instance.PlaySFX(impactAudioClip, 0.025f, true);
 		}
 		
+		IDamagable iDamageable = hitInfo.transform.GetComponent<IDamagable>();
+		
+		if(iDamageable != null)
+		{
+			iDamageable.DamagableHit(hitInfo, weaponData);
+			
+			// Instantiate the impact effect at the collision point and align it with the surface normal
+			if (impactEffectPrefab != null)
+			{
+				GameObject impactEffect = Instantiate(fleshImpactEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+				Destroy(impactEffect, 0.2f);  // Destroy the effect after 1 seconds
+			}
+		}
+		else
+		{
+			// Instantiate the impact effect at the collision point and align it with the surface normal
+			if (impactEffectPrefab != null)
+			{
+				GameObject impactEffect = Instantiate(impactEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+				Destroy(impactEffect, 2f);  // Destroy the effect after 2 seconds
+			}
+		}
+		OnTargetHit?.DynamicInvoke();
 		OnTargetHitUnityEvent?.Invoke();
 	}
 }

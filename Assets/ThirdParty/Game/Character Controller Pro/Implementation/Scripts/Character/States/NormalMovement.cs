@@ -73,7 +73,11 @@ namespace Lightbug.CharacterControllerPro.Implementation
         protected MaterialController materialController = null;
         protected int notGroundedJumpsLeft = 0;
         protected bool isAllowedToCancelJump = false;
-        protected bool wantToRun = false;
+	    protected bool wantToRun = false;
+	    public bool WantToRun { get { return wantToRun; } set { wantToRun = value; } }
+	    protected bool canRun = true;
+	    public bool CanRun { get { return canRun; } set { canRun = value; } }
+	    
         protected float currentPlanarSpeedLimit = 0f;
 
         protected bool groundedJumpAvailable = true;
@@ -114,6 +118,22 @@ namespace Lightbug.CharacterControllerPro.Implementation
             crouchParameters.heightRatio = Mathf.Max(minCrouchHeightRatio, crouchParameters.heightRatio);
         }
 
+	    private void Update()
+	    {
+		    float movementY = Input.GetAxis("Movement Y");
+		    float movementX = Input.GetAxis("Movement X");
+		
+		    if(movementY < 0 || movementX != 0)
+		    {
+			    CanRun = false;
+			    WantToRun = false;
+		    }
+		    if(movementY == 1)
+		    {
+			    CanRun = true;
+		    }
+	    }
+	    
         protected virtual void OnEnable()
         {
             CharacterActor.OnTeleport += OnTeleport;
@@ -293,15 +313,18 @@ namespace Lightbug.CharacterControllerPro.Implementation
 
 
                     // Run ------------------------------------------------------------
-                    if (planarMovementParameters.runInputMode == InputMode.Toggle)
-                    {
-                        if (CharacterActions.run.Started)
-                            wantToRun = !wantToRun;
-                    }
-                    else
-                    {
-                        wantToRun = CharacterActions.run.value;
-                    }
+	                if(canRun)
+	                {
+	                	if (planarMovementParameters.runInputMode == InputMode.Toggle)
+	                	{
+		                	if (CharacterActions.run.Started)
+			                	wantToRun = !wantToRun;
+	                	}
+	                	else
+	                	{
+		                	wantToRun = CharacterActions.run.value;
+	                	}
+	                }
 
                     if (wantToCrouch || !planarMovementParameters.canRun)
                         wantToRun = false;

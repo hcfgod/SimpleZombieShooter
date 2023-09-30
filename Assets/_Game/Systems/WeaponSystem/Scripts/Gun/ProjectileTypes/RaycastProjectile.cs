@@ -7,6 +7,7 @@ public class RaycastProjectile : MonoBehaviour, IProjectileType
 {
 	[SerializeField] private GameObject playerRoot;
 	[SerializeField] private PlayerData playerData;
+	[SerializeField] private WeaponData weaponData;
 	[SerializeField] private GunData gunData;
 	
 	public UnityEvent2 OnTargetHitUnityEvent;
@@ -21,6 +22,7 @@ public class RaycastProjectile : MonoBehaviour, IProjectileType
 	[SerializeField] private List<ParticleSystem> muzzleFlashEffects;
 	
 	[SerializeField] private GameObject impactEffectPrefab;
+	[SerializeField] private GameObject fleshImpactEffectPrefab;
 	[SerializeField] private AudioClip impactAudioClip;
 	
 	private List<Transform> _ignoreTransforms;
@@ -45,7 +47,7 @@ public class RaycastProjectile : MonoBehaviour, IProjectileType
 	
 	public void Fire(WeaponData weaponData)
 	{
-		RaycastHit hit;
+		RaycastHit hitInfo;
 		Vector3 start = _camera.transform.position;
 		Vector3 direction = _camera.transform.forward;
 
@@ -54,24 +56,12 @@ public class RaycastProjectile : MonoBehaviour, IProjectileType
 		direction.x += Random.Range(-spread, spread);
 		direction.y += Random.Range(-spread, spread);
 		
-		if (Physics.Raycast(start, direction, out hit, weaponData.Range, _hitLayers))
+		if (Physics.Raycast(start, direction, out hitInfo, weaponData.Range, _hitLayers))
 		{
 			// Check if the hit object is in the ignore list
-			if (_ignoreTransforms.Contains(hit.transform))
+			if (_ignoreTransforms.Contains(hitInfo.transform))
 			{
 				return; // We hit ourselves or a child object, so return
-			}
-			
-			// Instantiate the impact effect at the collision point and align it with the surface normal
-			if (impactEffectPrefab != null)
-			{
-				GameObject impactEffect = Instantiate(impactEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
-				Destroy(impactEffect, 2f);  // Destroy the effect after 2 seconds
-			}
-			
-			if(impactAudioClip != null)
-			{
-				AudioManager.instance.PlaySFX(impactAudioClip, 0.5f, true);
 			}
 			
 			foreach(ParticleSystem particalSystem in muzzleFlashEffects)
@@ -79,6 +69,34 @@ public class RaycastProjectile : MonoBehaviour, IProjectileType
 				particalSystem.Play();
 			}
 			
+			IDamagable iDamageable = hitInfo.transform.GetComponent<IDamagable>();
+		
+			if(iDamageable != null)
+			{
+				iDamageable.DamagableHit(hitInfo, weaponData);
+			
+				if(impactAudioClip != null)
+				{
+					AudioManager.instance.PlaySFX(impactAudioClip, 0.25f, true);
+				}
+				
+				// Instantiate the impact effect at the collision point and align it with the surface normal
+				if (impactEffectPrefab != null)
+				{
+					GameObject impactEffect = Instantiate(fleshImpactEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+					Destroy(impactEffect, 0.2f);  // Destroy the effect after 1 seconds
+				}
+			}
+			else
+			{
+				// Instantiate the impact effect at the collision point and align it with the surface normal
+				if (impactEffectPrefab != null)
+				{
+					GameObject impactEffect = Instantiate(impactEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+					Destroy(impactEffect, 2f);  // Destroy the effect after 2 seconds
+				}
+			}
+				
 			OnTargetHit?.DynamicInvoke();
 			OnTargetHitUnityEvent?.Invoke();
 		} 

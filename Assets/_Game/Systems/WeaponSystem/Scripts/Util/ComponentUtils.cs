@@ -78,4 +78,27 @@ public class ComponentUtils : MonoBehaviour
 			CollectAllTransformsNamesRecursive(child, list);
 		}
 	}
+	
+	public static void DeactivateComponentsAndColliders(GameObject root)
+	{
+		// Deactivate MonoBehaviour components
+		MonoBehaviour[] monoBehaviours = root.GetComponents<MonoBehaviour>();
+		foreach (MonoBehaviour monoBehaviour in monoBehaviours)
+		{
+			monoBehaviour.enabled = false;
+		}
+
+		// Deactivate Colliders
+		Collider[] colliders = root.GetComponents<Collider>();
+		foreach (Collider collider in colliders)
+		{
+			collider.enabled = false;
+		}
+
+		// Recursively deactivate components and colliders in child GameObjects
+		foreach (Transform child in root.transform)
+		{
+			DeactivateComponentsAndColliders(child.gameObject);
+		}
+	}
 }

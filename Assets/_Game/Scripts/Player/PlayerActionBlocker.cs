@@ -8,13 +8,22 @@ public class PlayerActionBlocker : MonoBehaviour
 	
 	private void Update()
     {
-	    if(_playerData.isTooCloseToWall)
+	    if(_playerData.isTooCloseToWall || _playerData.isRunning)
 	   	{
 	   		_playerData.canAim = false;
 	   	}
 	   	else
 	   	{
 	   		_playerData.canAim = true;
+	   	}
+	   	
+	   	if(_playerData.isRunning)
+	   	{
+		   	_playerData.canShoot = false;
+	   	}
+	   	else
+	   	{
+		   	_playerData.canShoot = true;
 	   	}
     }
 }

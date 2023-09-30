@@ -5,7 +5,7 @@ using StatSystem;
 
 public class HealthZeroInteraction : IStatInteraction
 {
-	public void ApplyInteraction(Stat baseStat, Stat targetStat)
+	public void ApplyInteraction(GameObject sender, Stat baseStat, Stat targetStat)
 	{
 		if (baseStat.Name == "Health" && baseStat.Value <= 0)
 		{

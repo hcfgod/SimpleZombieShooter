@@ -14,11 +14,11 @@ namespace StatSystem
 			interactions[interactionName] = interaction;
 		}
 
-		public void TriggerInteraction(string interactionName, Stat baseStat, Stat targetStat)
+		public void TriggerInteraction(string interactionName, GameObject sender, Stat baseStat, Stat targetStat)
 		{
 			if (interactions.ContainsKey(interactionName))
 			{
-				interactions[interactionName].ApplyInteraction(baseStat, targetStat);
+				interactions[interactionName].ApplyInteraction(sender, baseStat, targetStat);
 			}
 		}
 	}

@@ -50,6 +50,9 @@ public class WeaponManager : MonoBehaviour
 		
 		if (CurrentWeapon is BaseGun gun)
 		{	
+			if(!playerData.canShoot)
+				return;
+				
 			if (gun.FireModeEnum == EFireMode.Auto)
 			{
 				CurrentWeapon.Attack();
@@ -105,6 +108,9 @@ public class WeaponManager : MonoBehaviour
 			{
 				if(_inputManager.PlayerInputActions.Weapon.Attack.IsPressed())
 				{
+					if(!playerData.canShoot)
+						return;
+					
 					CurrentWeapon.Attack();
 				}
 			}
@@ -112,7 +118,10 @@ public class WeaponManager : MonoBehaviour
 			if(_inputManager.PlayerInputActions.Weapon.Aim.IsPressed())
 			{
 				if(!playerData.canAim)
+				{
+					gun.StopAiming();
 					return;
+				}
 					
 				gun.Aim();
 			}

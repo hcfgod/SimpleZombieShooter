@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class Bullet : MonoBehaviour
 {
 	public delegate void TargetHitEventHandler(RaycastHit hitInfo);
-	
 	public event TargetHitEventHandler OnTargetHit;
 	
 	private Rigidbody bulletRigidBody;

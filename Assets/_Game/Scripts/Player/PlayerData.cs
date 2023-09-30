@@ -13,5 +13,6 @@ public class PlayerData : ScriptableObject
 	
 	public bool isTooCloseToWall;
 	
+	public bool canShoot;
 	public bool canAim;
 }
