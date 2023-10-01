@@ -6,25 +6,35 @@ using UnityEngine.AI;
 public class ZombieAI : MonoBehaviour
 {
 	[Header("Chase Settings")]
-	public Transform target; // The target to chase
-	public float chaseSpeed = 3.5f;
+	[SerializeField] private Transform target; // The target to chase
+	[SerializeField] private float chaseSpeed = 3.5f;
 
 	[Header("Attack Settings")]
-	public float attackRange = 3f;
-	public float attackDelay = 1f;
+	[SerializeField] private float attackRange = 3f;
+	[SerializeField] private float attackDelay = 1f;
 
+	[SerializeField] private bool isDead = false;
+	[SerializeField] private bool isAttacking = false;
+	[SerializeField] private bool isChasing = false;
+	
 	private NavMeshAgent navAgent;
-	private bool isAttacking = false;
-
+	
 	private void Awake()
 	{
 		navAgent = GetComponent<NavMeshAgent>();
+		target = GameObject.FindWithTag("Player").transform;
 	}
 
 	private void Update()
 	{
 		if (target == null) return;
 
+		if(isDead)
+		{
+			navAgent.SetDestination(transform.position);
+			return;
+		}
+			
 		float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
 		if (distanceToTarget <= attackRange)
@@ -37,6 +47,18 @@ public class ZombieAI : MonoBehaviour
 		else
 		{
 			ChaseTarget();
+		}
+		
+		if(!isDead)
+		{
+			if(!isAttacking)
+			{
+				isChasing = true;
+			}
+			else
+			{
+				isChasing = false;
+			}
 		}
 	}
 
@@ -56,5 +78,35 @@ public class ZombieAI : MonoBehaviour
 
 		yield return new WaitForSeconds(attackDelay);
 		isAttacking = false;
+	}
+	
+	public bool GetIsDead()
+	{
+		return isDead;
+	}
+	
+	public void SetIsDead(bool value)
+	{
+		isDead = value;
+	}
+	
+	public bool GetIsChasing()
+	{
+		return isChasing;
+	}
+	
+	public void SetIsChasing(bool value)
+	{
+		isChasing = value;
+	}
+	
+	public bool GetIsAttacking()
+	{
+		return isAttacking;
+	}
+	
+	public void SetIsAttack(bool value)
+	{
+		isAttacking = value;
 	}
 }

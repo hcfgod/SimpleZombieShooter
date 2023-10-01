@@ -13,9 +13,11 @@ public class ZombieWaveManager : MonoBehaviour
 	
 	[SerializeField] private List<Transform> spawnpoints = new List<Transform>();
 	
-	private int currentWave;
-	private int zombiesLeft;
-	private int zombiesToSpawn;
+	[SerializeField] private int difficulty;
+	
+	[SerializeField] private int currentWave;
+	[SerializeField] private int zombiesLeft;
+	[SerializeField] private int zombiesToSpawn;
 
 	void Awake()
 	{
@@ -60,7 +62,7 @@ public class ZombieWaveManager : MonoBehaviour
 
 	int CalculateZombiesToSpawn(int wave)
 	{
-		return wave * 10;
+		return wave * difficulty;
 	}
 
 	void SpawnZombie()
